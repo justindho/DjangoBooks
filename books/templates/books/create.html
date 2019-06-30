@@ -1,0 +1,16 @@
+{% extends "books/base.html" %}
+
+{% block title %}
+    Add a Book to Your Reading List!
+{% endblock %}            
+
+{% block body %}
+    <form action="{% url 'create' %}" method="POST">
+        {% csrf_token %}
+        Title: <input type="text" name="title"><br>
+        Author: <input type="text" name="author"><br>
+        Genre: <input type="text" name="genre"><br>
+        <input type="submit" value="Submit">
+    </form>
+    <a href="{% url 'index' %}">Back to book list</a>
+{% endblock %}
