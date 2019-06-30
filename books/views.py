@@ -31,19 +31,38 @@ def create(request):
         return render(request, 'books/create.html', {'form': form})
 
 def index(request):
-    """ Show the user a his/her list of books. """    
-    context = {
+    """ Show the user a his/her list of books. """
+    reading_list = {
         "books": Book.objects.all()
-    }    
-    return render(request, 'books/index.html', context)
+    }
+    return render(request, 'books/index.html', reading_list)
 
 # def update(request, id):
 #     """ Edit details of a user's book in their book list. """
 #     book = Book.objects.get(id=id)
 #     return render(request, 'templates/edit.html', {'book': book})
 
-# def delete(request, id):
-#     """ Remove a book from a user's book list. """
-#     book = Book.objects.get(id=id)
-#     book.delete()
-#     return redirect('')
+def delete(request):
+    """ Remove a book from a user's book list. """
+    if request.method == 'POST':
+        print('IN DELETE')
+        try:
+            print('IN TRY')
+            # Get array of books to remove.
+            books = request.POST.getlist('checks[]')
+
+            # Delete each book in array.
+            print('length = ' + str(len(books)))
+            for book in books:
+                print('IN FOR LOOP')
+                book = book.replace(' - ', ' ').split(' ')
+                title, author, genre = book[0], book[1], book[2]                
+                Book.objects.filter(title=title, author=author,genre=genre).delete()
+        except Exception as e:
+            print(e)
+            pass
+        return redirect('index')
+    else:
+        # Get all books in reader's reading list.
+        books = Book.objects.all()
+        return render(request, "books/delete.html", {'books': books})

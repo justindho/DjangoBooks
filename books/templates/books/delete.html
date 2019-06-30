@@ -1,0 +1,33 @@
+{% extends "books/base.html" %}
+
+{% block title %}
+    Remove Books from Your Reading List
+{% endblock %}            
+
+{% block body %}
+    <form action="{% url 'delete' %}" method="POST">
+        {% csrf_token %}        
+        {% for book in books %}
+            <!-- <input type="checkbox" name="{{ book }}">{{ book }}</input><br>             -->
+            <input type="checkbox" name="checks[]" value="{{ book }}">{{ book }}</input><br>            
+        {% endfor %}        
+        <input type="submit" id="button-remove" value="Remove Books">
+    </form>
+    <a href="{% url 'index' %}">Back to book list</a>
+
+    <!-- <script>
+        let url = "127.0.0.1:8000/books/delete";
+        let checked = [];
+        document.getElementById('button-remove').onclick( () => {
+            // Get all books that the user wants to remove from their reading list.
+            let elems = document.querySelector('input[type="checkbox"]');
+            for (let i = 0; i < elems.length; i++) {
+                if (elems[i].checked) checked.push(elems[i]);
+            }
+
+            // Send array of books to remove to the 'delete' route.
+            let xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("POST", url)
+        });
+    </script> -->
+{% endblock %}
