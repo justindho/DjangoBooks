@@ -131,3 +131,6 @@ config.json
 
 # files containing API keys
 secret_settings.py
+
+# Django
+*migrations/
