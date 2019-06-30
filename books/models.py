@@ -1,9 +1,13 @@
 from django.db import models
 
 # Create your models here.
-class Books(models.Model):
+class Book(models.Model):
     title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
+    genre = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = "book"
     
     def __str__(self):
-        return f"{self.title} - {self.author}"
+        return f"{self.title} - {self.author} - {self.genre}"
