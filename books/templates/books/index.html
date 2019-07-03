@@ -2,7 +2,7 @@
 
 {% block title %}
     Book List
-{% endblock %}            
+{% endblock %}
 
 {% block body %}
     <h1>Book List</h1>
@@ -13,4 +13,13 @@
             </li>
         {% endfor %}
     </ul>
+    <form action="{% url 'create' %}">
+        <button id="addBook" type="submit">Add Book(s)</button>
+    </form>
+    <form action="{% url 'delete' %}">
+        <button id="deleteBook" type="submit">Remove Book(s)</button>
+    </form>
+    <form action="{% url 'update' %}">
+        <button id="updateBook" type="submit">Update Book(s) Details</button>
+    </form>
 {% endblock %}

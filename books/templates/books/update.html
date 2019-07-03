@@ -1,0 +1,22 @@
+{% extends "books/base.html" %}
+
+{% block title %}
+    Update Book Details
+{% endblock %}            
+
+{% block body %}
+    <h1>Update Book Details</h1>
+    <form action="{% url 'update' %}" method="POST">
+        {% csrf_token %}
+        <select name="book_selection">
+            {% for book in books %}            
+                <option value="{{ book.id }}">{{ book }}</option>
+            {% endfor %}
+        </select><br>        
+        Title: <input type="text" name="title"><br>
+        Author: <input type="text" name="author"><br>
+        Genre: <input type="text" name="genre"><br>
+        <input type="submit" value="Submit">
+    </form>
+    <a href="{% url 'index' %}">Back to book list</a>
+{% endblock %}
