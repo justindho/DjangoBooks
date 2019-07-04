@@ -1,6 +1,15 @@
+{% load static %}
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
+
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" type="text/css" media="screen" href="{% static 'books/bootstrap.min.css' %}">
+
+        <!-- My CSS -->
+        {% block css %}{% endblock %}
+        
         <title>{% block title %}{% endblock %}</title>
     </head>
     <body>

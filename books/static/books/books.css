@@ -1,0 +1,11 @@
+#button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 50%;
+}
+
+.form-control-inline {
+    min-width: 0;
+    width: auto;
+    display: inline;
+}

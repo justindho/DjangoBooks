@@ -1,11 +1,29 @@
 {% extends "books/base.html" %}
-
+{% load static %}
 {% block title %}
     Book List
 {% endblock %}
 
+{% block css %}
+    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'books/books.css' %}">
+{% endblock %}
+
 {% block body %}
     <h1>Book List</h1>
+    Filter by Author:
+    <select>
+        <option value="all"></option>
+        {% for author in authors %}
+            <option value="{{ author }}">{{ author }}</option>
+        {% endfor %}
+    </select><br>
+    Filter by Genre:
+    <select>
+        <option value="all"></option>
+        {% for genre in genres %}
+            <option value="{{ genre }}">{{ genre }}</option>
+        {% endfor %}
+    </select>
     <ul>
         {% for book in books %}
             <li>
@@ -13,13 +31,15 @@
             </li>
         {% endfor %}
     </ul>
-    <form action="{% url 'create' %}">
-        <button id="addBook" type="submit">Add Book(s)</button>
-    </form>
-    <form action="{% url 'delete' %}">
-        <button id="deleteBook" type="submit">Remove Book(s)</button>
-    </form>
-    <form action="{% url 'update' %}">
-        <button id="updateBook" type="submit">Update Book(s) Details</button>
-    </form>
+    <div id="button-container">
+        <form action="{% url 'create' %}">
+            <button id="addBook" type="submit" class="btn btn-outline-primary">Add Book(s)</button>
+        </form>
+        <form action="{% url 'delete' %}">
+            <button id="deleteBook" type="submit"  class="btn btn-outline-danger">Remove Book(s)</button>
+        </form>
+        <form action="{% url 'update' %}">
+            <button id="updateBook" type="submit"  class="btn btn-outline-secondary">Update Book(s) Details</button>
+        </form>
+    </div>
 {% endblock %}

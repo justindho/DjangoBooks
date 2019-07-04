@@ -2,21 +2,21 @@
 
 {% block title %}
     Update Book Details
-{% endblock %}            
+{% endblock %}
 
 {% block body %}
     <h1>Update Book Details</h1>
     <form action="{% url 'update' %}" method="POST">
         {% csrf_token %}
-        <select name="book_selection">
-            {% for book in books %}            
+        <select name="book_selection" class="custom-select custom-select-lg mb-3 form-control-inline">
+            {% for book in books %}
                 <option value="{{ book.id }}">{{ book }}</option>
             {% endfor %}
-        </select><br>        
-        Title: <input type="text" name="title"><br>
-        Author: <input type="text" name="author"><br>
-        Genre: <input type="text" name="genre"><br>
-        <input type="submit" value="Submit">
+        </select><br>
+        Title: <input type="text" name="title" class="form-control form-control-inline"><br>
+        Author: <input type="text" name="author" class="form-control"><br>
+        Genre: <input type="text" name="genre" class="form-control"><br>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     <a href="{% url 'index' %}">Back to book list</a>
 {% endblock %}

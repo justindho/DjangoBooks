@@ -5,12 +5,13 @@
 {% endblock %}            
 
 {% block body %}
-    <form action="{% url 'create' %}" method="POST">
+<h1>Add a Book to Your Reading List</h1>
+    <form action="{% url 'create' %}" method="POST" class="form-group">
         {% csrf_token %}
-        Title: <input type="text" name="title"><br>
-        Author: <input type="text" name="author"><br>
-        Genre: <input type="text" name="genre"><br>
-        <input type="submit" value="Submit">
+        Title: <input type="text" name="title" class="form-control"><br>
+        Author: <input type="text" name="author" class="form-control"><br>
+        Genre: <input type="text" name="genre" class="form-control"><br>
+        <button type="submit" class="btn btn-primary">Add Book</button>
     </form>
     <a href="{% url 'index' %}">Back to book list</a>
 {% endblock %}
