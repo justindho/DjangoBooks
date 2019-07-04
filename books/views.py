@@ -22,6 +22,7 @@ def create(request):
             except:
                 pass
         else:
+            print('missing form elements')
             form = CreateBookForm()
         return render(request, 'books/create.html', {'form': form})
     else:
@@ -29,11 +30,13 @@ def create(request):
         return render(request, 'books/create.html', {'form': form})
 
 def index(request):
-    """ Show the user a his/her list of books. """
-    reading_list = {
-        "books": Book.objects.all()
+    """ Show the user his/her list of books. """
+    context = {
+        "authors": list(Book.objects.order_by('author').values_list('author', flat=True).distinct()),
+        "books": Book.objects.all(),        
+        "genres": list(Book.objects.order_by().values_list('genre', flat=True).distinct())
     }
-    return render(request, 'books/index.html', reading_list)
+    return render(request, 'books/index.html', context)
 
 def update(request):
     """ Edit details of a user's book in their book list. """

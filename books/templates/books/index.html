@@ -11,14 +11,14 @@
 {% block body %}
     <h1>Book List</h1>
     Filter by Author:
-    <select>
+    <select class="custom-select mb-3">
         <option value="all"></option>
         {% for author in authors %}
             <option value="{{ author }}">{{ author }}</option>
         {% endfor %}
     </select><br>
     Filter by Genre:
-    <select>
+    <select class="custom-select mb-3">
         <option value="all"></option>
         {% for genre in genres %}
             <option value="{{ genre }}">{{ genre }}</option>
