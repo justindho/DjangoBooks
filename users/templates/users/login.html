@@ -1,0 +1,29 @@
+{% extends "users/base.html" %}
+
+{% block head %}
+{% endblock %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block body %}
+    <h1>Login</h1>
+    {% if message %}
+        <div>
+            {{ message }}
+        </div>
+    {% endif %}
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <input name="username" type="text">
+        <input name="password" type="password">
+        <button id="button-login" class="btn btn-primary" type="submit">Login</button>
+    </form>
+    <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        <small>Don't have an account? Register here.</small>
+        <button id="button-register" class="btn btn-secondary" type="submit">Register</button>
+    </form>
+
+{% endblock %}
