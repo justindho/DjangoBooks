@@ -6,8 +6,7 @@ from users.models import CustomUser
 class Book(models.Model):
     title = models.CharField(max_length=200)
     author = models.CharField(max_length=200)
-    genre = models.CharField(max_length=200)
-    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    genre = models.CharField(max_length=200)    
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
 
     class Meta:

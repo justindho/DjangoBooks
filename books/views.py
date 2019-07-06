@@ -19,22 +19,23 @@ def create(request):
                 author = form.cleaned_data["author"]
                 genre = form.cleaned_data["genre"]
                 duplicate_count = Book.objects.filter(title=title, author=author, genre=genre).count()
-
+                
                 if duplicate_count > 0:
-                    return redirect('')
-
+                    return redirect('index')
+                
                 # Create Book object to store in db.
                 book = Book()
                 book.title = form.cleaned_data["title"]
                 book.author = form.cleaned_data["author"]
                 book.genre = form.cleaned_data["genre"]
+                # book.user = str(request.user)
                 book.user = request.user
-
+                
                 # Save the new Book object in the db.
-                book.save()
+                book.save()                
                 return redirect('index')
-            except:
-                print('in exception')
+            except Exception as e:
+                print(e)
                 pass
         else:
             print('form is not valid')
@@ -50,15 +51,15 @@ def index(request):
     # Query for author and genre filters
     # if request.method == 'POST':
     #     form =
-
-    # user = Book.objects.get(username=request.username)
-    user = str(request.user)
+    
+    user = request.user
+    username = CustomUser.objects.get(username=user.username)    
 
     context = {
-        "authors": list(Book.objects.order_by('author').values_list('author', flat=True).distinct()),
-        "books": Book.objects.all(),
+        "authors": list(Book.objects.order_by('author').values_list('author', flat=True).distinct()),        
+        "books": Book.objects.filter(user=username),
         "genres": list(Book.objects.order_by().values_list('genre', flat=True).distinct()),
-        "user": user
+        "user": str(user)
     }
     return render(request, 'books/index.html', context)
 
