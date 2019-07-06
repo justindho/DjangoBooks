@@ -32,13 +32,14 @@ ALLOWED_HOSTS = ['localhost', 'testserver', '127.0.0.1', 'http://127.0.0.1:8000/
 # Application definition
 
 INSTALLED_APPS = [
-    'books.apps.BooksConfig',
+    'books.apps.BooksConfig',    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +57,7 @@ ROOT_URLCONF = 'djangobooks.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -120,3 +121,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+    '../books/static/'
+]
+
+# Login & logout
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+
+# Email for password reset
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+
+# User model to override built-in User model
+AUTH_USER_MODEL = 'users.CustomUser'

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        Hi {{ user.username }}!
+        <form action="{% url 'logout' %}">
+            <button class="btn btn-primary">Logout</button>
+        </form>
+        <!-- <p><a href="{% url 'logout' %}">Logout</a></p> -->
+        <small><a href="{% url 'password_reset' %}">Reset password</a></small>
+    {% else %}
+        <p>You are not logged in.</p>
+        <form action="{% url 'login' %}">
+            <button class="btn btn-primary">Login</button>
+        </form>
+                
+        <small>Need an account? <a href="{% url 'signup' %}">Sign up now!</a></small>
+    {% endif %}
+{% endblock %}

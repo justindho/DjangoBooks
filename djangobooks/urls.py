@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
-# import users.views as user_views
+from django.views.generic.base import TemplateView
 
 urlpatterns = [
     # User URLs.
@@ -26,13 +26,19 @@ urlpatterns = [
     #
     # Django's LogoutView:
     # https://docs.djangoproject.com/en/2.2/topics/auth/default/#django.contrib.auth.views.LogoutView
-    # path("register/", user_views.register, name="register"),  
-    # path("login/", auth_views.LoginView.as_view(template_name="users/login.html"), name="login"),
-    # path("logout/", auth_views.LogoutView.as_view(template_name="users/logout.html"), name="logout"),    
-    
-    # Books URLs.
-    path("", include("books.urls")),
+
+    # Home page
+    # path("", TemplateView.as_view(template_name='home.html'), name='home'),
 
     # Admin stuff.
-    path("admin/", admin.site.urls),    
+    path("admin/", admin.site.urls),
+
+    # User Authorization.
+    path("users/", include("users.urls")),
+    path("users/", include("django.contrib.auth.urls")),
+
+    # Books URLs.
+    path("books/", include("books.urls")),
+
+    path("", TemplateView.as_view(template_name='home.html'), name='home'),
 ]
