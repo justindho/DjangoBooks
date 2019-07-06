@@ -1,12 +1,19 @@
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import CreateBookForm
 
 from .models import Book
+from users.models import CustomUser
 
 # Create your views here.
+@login_required
 def create(request):
     """ Create a book to add to a user's book list. """
+    print(type(request.user))
+    print('user: ' + str(request.user))
     if request.method == 'POST':
+        print('POST user: ' + str(request.user))
         form = CreateBookForm(request.POST)
         if form.is_valid():
             try:
@@ -24,34 +31,43 @@ def create(request):
                 book.title = form.cleaned_data["title"]
                 book.author = form.cleaned_data["author"]
                 book.genre = form.cleaned_data["genre"]
+                book.user = request.user
 
                 # Save the new Book object in the db.
                 book.save()
+                print('book saved')
                 return redirect('')
             except:
+                print('in exception')
                 pass
-        else:
-            print('missing form elements')
+        else:            
             form = CreateBookForm()
         return render(request, 'books/create.html', {'form': form})
     else:
         form = CreateBookForm()
         return render(request, 'books/create.html', {'form': form})
 
+@login_required
 def index(request):
     """ Show the user his/her list of books. """
-
     # Query for author and genre filters
     # if request.method == 'POST':        
     #     form = 
 
+    # user = Book.objects.get(username=request.username)
+    user = str(request.user)
+    print(user)
+    print(type(request.user))
+
     context = {
         "authors": list(Book.objects.order_by('author').values_list('author', flat=True).distinct()),
         "books": Book.objects.all(),        
-        "genres": list(Book.objects.order_by().values_list('genre', flat=True).distinct())
+        "genres": list(Book.objects.order_by().values_list('genre', flat=True).distinct()),
+        "user": user
     }
     return render(request, 'books/index.html', context)
 
+@login_required
 def update(request):
     """ Edit details of a user's book in their book list. """
     if request.method == 'POST':
@@ -69,10 +85,10 @@ def update(request):
         books = Book.objects.all()
         return render(request, 'books/update.html', {'books': books})
 
+@login_required
 def delete(request):
     """ Remove a book from a user's book list. """
-    if request.method == 'POST':
-        print('inside postrequest')
+    if request.method == 'POST':        
         try:
             # Get array of books to remove.
             books = request.POST.getlist('checks[]')
@@ -91,6 +107,7 @@ def delete(request):
         books = Book.objects.all()
         return render(request, "books/delete.html", {'books': books})
 
+@login_required
 def book_details(request):
     """ View more information about a book. """
     pass
