@@ -10,10 +10,7 @@ from users.models import CustomUser
 @login_required
 def create(request):
     """ Create a book to add to a user's book list. """
-    print(type(request.user))
-    print('user: ' + str(request.user))
-    if request.method == 'POST':
-        print('POST user: ' + str(request.user))
+    if request.method == 'POST':        
         form = CreateBookForm(request.POST)
         if form.is_valid():
             try:
@@ -35,12 +32,12 @@ def create(request):
 
                 # Save the new Book object in the db.
                 book.save()
-                print('book saved')
-                return redirect('')
+                return redirect('index')
             except:
                 print('in exception')
                 pass
-        else:            
+        else:
+            print('form is not valid')
             form = CreateBookForm()
         return render(request, 'books/create.html', {'form': form})
     else:
@@ -51,17 +48,15 @@ def create(request):
 def index(request):
     """ Show the user his/her list of books. """
     # Query for author and genre filters
-    # if request.method == 'POST':        
-    #     form = 
+    # if request.method == 'POST':
+    #     form =
 
     # user = Book.objects.get(username=request.username)
     user = str(request.user)
-    print(user)
-    print(type(request.user))
 
     context = {
         "authors": list(Book.objects.order_by('author').values_list('author', flat=True).distinct()),
-        "books": Book.objects.all(),        
+        "books": Book.objects.all(),
         "genres": list(Book.objects.order_by().values_list('genre', flat=True).distinct()),
         "user": user
     }
@@ -72,14 +67,14 @@ def update(request):
     """ Edit details of a user's book in their book list. """
     if request.method == 'POST':
         # Get updated book data from form
-        book_selection = request.POST.get('book_selection')        
-        book = Book.objects.get(id=book_selection)        
+        book_selection = request.POST.get('book_selection')
+        book = Book.objects.get(id=book_selection)
         new_title = request.POST.get('title')
         new_author = request.POST.get('author')
-        new_genre = request.POST.get('genre')        
+        new_genre = request.POST.get('genre')
 
         # Update book information in database
-        Book.objects.filter(title=book.title, author=book.author, genre=book.genre).update(title=new_title, author=new_author, genre=new_genre)         
+        Book.objects.filter(title=book.title, author=book.author, genre=book.genre).update(title=new_title, author=new_author, genre=new_genre)
         return redirect('index')
     else:
         books = Book.objects.all()
@@ -88,17 +83,17 @@ def update(request):
 @login_required
 def delete(request):
     """ Remove a book from a user's book list. """
-    if request.method == 'POST':        
+    if request.method == 'POST':
         try:
             # Get array of books to remove.
             books = request.POST.getlist('checks[]')
             print(books)
 
-            # Delete each book in array.            
+            # Delete each book in array.
             for book in books:
                 book = book.replace(' - ', ' ').split(' ')
                 title, author, genre = book[0], book[1], book[2]
-                Book.objects.filter(title=title, author=author,genre=genre).delete()            
+                Book.objects.filter(title=title, author=author,genre=genre).delete()
         except Exception as e:
             pass
         return redirect('index')
