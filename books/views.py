@@ -1,8 +1,11 @@
 from django.conf import settings
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from .forms import CreateBookForm
+from django.views.decorators.csrf import csrf_exempt
 
+from .forms import CreateBookForm
 from .models import Book
 from users.models import CustomUser
 
@@ -10,7 +13,7 @@ from users.models import CustomUser
 @login_required
 def create(request):
     """ Create a book to add to a user's book list. """
-    if request.method == 'POST':        
+    if request.method == 'POST':
         form = CreateBookForm(request.POST)
         if form.is_valid():
             try:
@@ -19,20 +22,19 @@ def create(request):
                 author = form.cleaned_data["author"]
                 genre = form.cleaned_data["genre"]
                 duplicate_count = Book.objects.filter(title=title, author=author, genre=genre).count()
-                
+
                 if duplicate_count > 0:
                     return redirect('index')
-                
+
                 # Create Book object to store in db.
                 book = Book()
                 book.title = form.cleaned_data["title"]
                 book.author = form.cleaned_data["author"]
                 book.genre = form.cleaned_data["genre"]
-                # book.user = str(request.user)
                 book.user = request.user
-                
+
                 # Save the new Book object in the db.
-                book.save()                
+                book.save()
                 return redirect('index')
             except Exception as e:
                 print(e)
@@ -48,17 +50,13 @@ def create(request):
 @login_required
 def index(request):
     """ Show the user his/her list of books. """
-    # Query for author and genre filters
-    # if request.method == 'POST':
-    #     form =
-    
     user = request.user
-    username = CustomUser.objects.get(username=user.username)    
+    username = CustomUser.objects.get(username=user.username)
 
     context = {
-        "authors": list(Book.objects.order_by('author').values_list('author', flat=True).distinct()),        
+        "authors": list(Book.objects.filter(user=username).order_by('author').values_list('author', flat=True).distinct()),
         "books": Book.objects.filter(user=username),
-        "genres": list(Book.objects.order_by().values_list('genre', flat=True).distinct()),
+        "genres": list(Book.objects.filter(user=username).order_by().values_list('genre', flat=True).distinct()),
         "user": str(user)
     }
     return render(request, 'books/index.html', context)
@@ -110,3 +108,34 @@ def book_details(request):
 
     # Show number of pages
     # Show current price on several different websites
+
+def logout(request):
+    """ Logout user. """
+    logout(request)
+
+@login_required
+@csrf_exempt
+def query_filter(request):
+    """ Return a JSON object of a query request. """
+    user = request.user
+    username = CustomUser.objects.get(username=user.username)
+
+    author = request.POST.get('author')
+    genre = request.POST.get('genre')
+    if author == 'all' and genre == 'all':
+        books = Book.objects.filter(user=username)
+    elif author == 'all':
+        books = Book.objects.filter(user=username).filter(genre=genre)
+    elif genre == 'all':
+        books = Book.objects.filter(user=username).filter(author=author)
+    else:
+        books = Book.objects.filter(user=username).filter(author=author, genre=genre)
+    response = []
+    for book in books:
+        title = book.title
+        author = book.author
+        genre = book.genre
+        response.append({'title': title, 'author': author, 'genre': genre})
+
+    # Return JSON response
+    return JsonResponse(response, safe=False)

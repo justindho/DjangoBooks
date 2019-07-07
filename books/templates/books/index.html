@@ -5,28 +5,29 @@
 {% endblock %}
 
 {% block head %}
-    <link rel="stylesheet" type="text/css" media="screen" href="{% static 'books/books.css' %}">
-    <!-- <script src="{% static 'books/index.js' %}"></script> -->
+    <link rel="stylesheet" type="text/css" href="{% static 'books/books.css' %}">
+    <script src="{% static 'books/index.js' %}"></script>
 {% endblock %}
 
 {% block body %}
-    <h1>{{ user }}'s Book List</h1>
+    <h1>{{ user }}'s Reading List</h1>
     <form id="filter-form">
         Filter by Author:
-        <select name="filter-author" class="custom-select mb-3">
+        <select id="filter-author" name="filter-author" class="custom-select mb-3">
             <option value="all"></option>
             {% for author in authors %}
                 <option value="{{ author }}">{{ author }}</option>
             {% endfor %}
         </select><br>
         Filter by Genre:
-        <select name="filter-genre" class="custom-select mb-3">
+        <select id="filter-genre" name="filter-genre" class="custom-select mb-3">
             <option value="all"></option>
             {% for genre in genres %}
                 <option value="{{ genre }}">{{ genre }}</option>
             {% endfor %}
-        </select>        
-    </form>    
+        </select>
+    </form>
+
     <ul id="booklist">
         {% for book in books %}
             <li>
@@ -46,7 +47,7 @@
         </form>
     </div>
     <br>
-    <form action="{% url 'home' %}">
+    <form action="{% url 'logout' %}">
         <button id="button-logout" type="submit" class="btn btn-dark">Logout</button>
     </form>
 {% endblock %}
