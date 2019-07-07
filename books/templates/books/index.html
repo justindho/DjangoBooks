@@ -28,13 +28,13 @@
         </select>
     </form>
 
-    <ul id="booklist">
+    <ol id="booklist">
         {% for book in books %}
             <li>
                 {{ book }}
             </li>
         {% endfor %}
-    </ul>
+    </ol>
     <div id="button-container">
         <form action="{% url 'create' %}">
             <button id="addBook" type="submit" class="btn btn-outline-primary">Add Book(s)</button>
