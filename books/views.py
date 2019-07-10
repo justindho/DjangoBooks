@@ -89,16 +89,21 @@ def delete(request):
             print(books)
 
             # Delete each book in array.
-            for book in books:
-                book = book.replace(' - ', ' ').split(' ')
+            for book in books:                
+                book = book.split(' - ')
                 title, author, genre = book[0], book[1], book[2]
+                print('title: ' + title)
+                print('author: ' + author)
+                print('genre: ' + genre)
                 Book.objects.filter(title=title, author=author,genre=genre).delete()
         except Exception as e:
             pass
         return redirect('index')
     else:
         # Get all books in reader's reading list.
-        books = Book.objects.all()
+        user = request.user
+        username = CustomUser.objects.get(username=user.username)
+        books = Book.objects.filter(user=username)
         return render(request, "books/delete.html", {'books': books})
 
 @login_required
