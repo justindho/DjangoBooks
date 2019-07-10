@@ -128,7 +128,7 @@ STATIC_DIRS = [
 ]
 
 # Login & logout
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = '/users/books/'
 LOGOUT_REDIRECT_URL = 'home'
 
 # Email for password reset
