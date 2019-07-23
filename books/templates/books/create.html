@@ -8,7 +8,7 @@
 <h1>Add a Book to Your Reading List</h1>
     <form action="{% url 'create' %}" method="POST" class="form-group">
         {% csrf_token %}
-        Title: <input type="text" name="title" class="form-control"><br>
+        Title: <input type="text" name="title" class="form-control" autofocus><br>
         Author: <input type="text" name="author" class="form-control"><br>
         Genre: <input type="text" name="genre" class="form-control"><br>
         <button type="submit" class="btn btn-primary">Add Book</button>
