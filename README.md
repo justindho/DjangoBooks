@@ -1,7 +1,7 @@
 ## DjangoBooks
 DjangoBooks allows users to keep track of a list of books that they've been wanting to read but just have not had the time to do so yet. Users can create an account and login to view their reading list. Users can also filter their reading list to view books by author or genre. 
 
-This project uses Djano's default object-relational mapping layer (ORM) to query the database for a user's reading list and associated operations on it.
+This project uses Django's default object-relational mapping layer (ORM) to query the database for a user's reading list and associated operations on it.
 
 ### Screenshots
 ![](/images/booklist.png)
