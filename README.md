@@ -4,11 +4,12 @@ DjangoBooks allows users to keep track of a list of books that they've been want
 This project uses Django's default object-relational mapping layer (ORM) to query the database for a user's reading list and associated operations on it.
 
 ### Screenshots
-![](/images/booklist.png)
-![](/images/booklist_filtered.png)
-![](/images/add_book.png)
-![](/images/remove_books.png)
-![](/images/update_book.png)
+![App Demo](./images/djangoBooks.gif)
+![](./images/booklist.png)
+![](./images/booklist_filtered.png)
+![](./images/add_book.png)
+![](./images/remove_books.png)
+![](./images/update_book.png)
 
 ### Installing
 1. Open a command line interface.
